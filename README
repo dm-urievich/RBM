@@ -1,0 +1,9 @@
+RBM - rotor balancer machine
+
+небольшой проект-шабашка
+
+электроника и ПО для балансировочного станка по заказу Алексея Гулина (peremotka.dom@gmail.com)
+
+
+геренерить бинарник
+arm-none-eabi-objcopy -v -O binary minimum-CM3.axf foo.bin
