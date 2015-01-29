@@ -1,48 +1,52 @@
-#define STM32F10X_MD
 #include "stm32f10x.h"
-//#include "system_stm32f10x.h"
+#include "system_stm32f10x.h"
 
-//#include "stm32f10x_gpio.h"
+#include "stm32f10x_rcc.h"
+#include "stm32f10x_gpio.h"
 
-void SystemInit (void)
-{
-
-}
+void periph_init();
 
 int main(void)
 {
-
-    RCC->APB2ENR	|= RCC_APB2ENR_IOPBEN;		// Подали такты на порт. Без этого работать не будет.
-
-    // настройка PB15 на выход для мигания светодиодиком
-
-    GPIOB->CRH &= ~GPIO_CRH_CNF15;		// Обнулили биты CNF3 т.к. после старта они настроены как (01)
-                                        // режим Open Drain. А нам надо Push-Pull (00)
-
-    GPIOB->CRH |= GPIO_CRH_MODE15_0 | GPIO_CRH_MODE15_1;		// Настроили порт на выход
-
+    periph_init();
 
     volatile int i;
 
     for(;;)
     {
+        GPIO_SetBits(GPIOB, GPIO_Pin_15);
 
-        GPIOB->BSRR |= GPIO_BSRR_BS15;
-
-        for (i = 0; i < 100000; i++)
+        for (i = 0; i < 1000000; i++)
         {
             ;
         }
 
-        GPIOB->BSRR |= GPIO_BSRR_BR15;
+        GPIO_ResetBits(GPIOB, GPIO_Pin_15);
 
-        for (i = 0; i < 100000; i++)
+        for (i = 0; i < 1000000; i++)
         {
             ;
         }
-
     }
 
     return 0;
 }
 
+void periph_init()
+{
+    // init GPIO
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+
+    GPIO_InitTypeDef GPIO_InitStructure;
+
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_15;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+
+    GPIO_Init(GPIOB , &GPIO_InitStructure);
+
+    // init UART
+
+
+    // init ADC
+}

@@ -7,3 +7,5 @@ RBM - rotor balancer machine
 
 геренерить бинарник
 arm-none-eabi-objcopy -v -O binary minimum-CM3.axf foo.bin
+
+st-flash write rbm.bin 0x08000000
