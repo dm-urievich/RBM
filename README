@@ -9,3 +9,10 @@ RBM - rotor balancer machine
 arm-none-eabi-objcopy -v -O binary minimum-CM3.axf foo.bin
 
 st-flash write rbm.bin 0x08000000
+
+
+TODO:
+    настроить АЦП посмотреть что выдают акселерометры
+    прикрутить модбас
+    начать ваять прогу для компа
+    разработать архитектуру (таймер, обработка периода и т.п.)
